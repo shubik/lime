@@ -1,0 +1,35 @@
+{
+  "version": "0.1.0",
+  "author": {
+    "name": "Alexander Farennikov",
+    "email": "farennikov@gmail.com"
+  },
+  "name": "lime",
+  "description": "Distributed event emitter for Node.js",
+  "keywords": [
+    "event",
+    "events",
+    "eventemitter"
+  ],
+  "homepage": "https://github.com/shubik/lime",
+  "license": "MIT",
+  "contributors": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shubik/lime"
+  },
+  "bugs": {
+    "url": "https://github.com/shubik/lime/issues"
+  },
+  "main": "./lib/index.js",
+  "scripts": {},
+  "engines": {
+    "node": ">= 0.4.0"
+  },
+  "dependencies": {
+    "lodash": "~2.4.1",
+    "redis": "~0.8.2"
+  },
+  "devDependencies": {},
+  "readmeFilename": "README.md"
+}
