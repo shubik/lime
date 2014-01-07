@@ -10,4 +10,5 @@ sub.on('foo', function(data) {
 });
 
 pub.join('test').emit('foo', 'bar');
+
 pub.leave('test').leave().quit();
