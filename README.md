@@ -81,7 +81,7 @@ Emits event to joined rooms. Examples:
 
 ```javascript
 disp.emit('hello-world', { foo: 'bar' }); // emits event "hello-world"
-disp.emit('galaxy.123', 'hello-world', { foo: 'bar' }); // emits event "galaxy.123::hello-world" depending on delimeter
+disp.emit('galaxy.123', 'hello-world', { foo: 'bar' }); // emits event "galaxy.123::hello-world" if delimeter is set to "::"
 ```
 
 This method is chainable.
@@ -91,25 +91,44 @@ This method is chainable.
 Adds listener for an event. Examples:
 
 ```javascript
-disp.on('hello-world', function() { ... }); // will be triggered by event "hello-world"
-disp.on('company.*', function() { ... }); // will be triggered by events "company.1234", "company.Foo" etc.
-disp.on('hello-world', 'galaxy.*', function() { ... }); // will be triggered by events "galaxy.123::hello-world" or "hello-world::galaxy.Milky Way", and so on
-disp.on('*', function() { ... }); // will be triggered by all events
+disp.on('hello-world', cbFunc); // will be triggered by event "hello-world"
+disp.on('company.*', cbFunc); // will be triggered by events "company.1234", "company.Foo" etc.
+disp.on('hello-world', 'galaxy.*', cbFunc); // will be triggered by events "galaxy.123::hello-world" or "hello-world::galaxy.Milky Way", and so on
+disp.on('*', cbFunc); // will be triggered by all events
 ```
 
 Callbacks will be executed with different arguments depending on their expected arguments:
 
-*   If callback function expects 0 arguments, it will be executed without any;
+*   If callback expects 0 arguments, it will be executed without any;
 *   If callback expects 1 argument, it will be executed with event payload only;
 *   If callback expects 2 arguments, it will be executed with event name and event payload.
+
+Examples:
+
+```javascript
+disp.on('foo', function() { ... }); // will be executed sans arguments
+disp.on('foo', function(data) { ... }); // will be executed with event payload
+disp.on('foo', function(evt, data) { ... }); // will be executed with event name and payload
+```
 
 This method is chainable.
 
 ### off()
 
+Removes listeners for provided event. Examples:
+
+```javascript
+disp.off('hello-world'); // removes callbacks for "hello-world" event
+disp.off('galaxy.123', 'hello-world'); // removes callbacks for "galaxy.123::hello-world" event if delimeter is set to "::"
+```
+
 This method is chainable.
 
 ### quit()
+
+Removes callbacks for all events and quits all currently used Redis clients.
+
+This method is not chainable.
 
 ## Changelog
 
