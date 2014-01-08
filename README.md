@@ -130,6 +130,49 @@ Removes callbacks for all events and quits all currently used Redis clients.
 
 This method is not chainable.
 
+## Examples
+
+```javascript
+/*
+Emitter
+*/
+
+var Lime = require('lime'),
+    disp = new Lime({ redisHost: '10.0.0.1' });
+
+disp
+    .join('company:345')
+    .emit('user:123', 'model:company', 'event:update', { active: false })
+    .quit();
+```
+
+```javascript
+/*
+Subscriber A
+*/
+
+var Lime = require('lime'),
+    disp = new Lime({ redisHost: '10.0.0.1' });
+```
+
+```javascript
+/*
+Subscriber B
+*/
+
+var Lime = require('lime'),
+    disp = new Lime({ redisHost: '10.0.0.1' });
+```
+
+```javascript
+/*
+Subscriber C
+*/
+
+var Lime = require('lime'),
+    disp = new Lime({ redisHost: '10.0.0.1' });
+```
+
 ## Changelog
 
 ### v.0.1.0
