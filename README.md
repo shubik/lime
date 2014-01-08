@@ -25,6 +25,7 @@ $ npm install lime
 *   In your applications events can be described as belonging to domains or rooms, e.g. events related to specific entities &mdash; users, companies, topics, etc.
 *   You are able to use a dedicated instance for Redis server
 *   Parts of your application do not necessarily reside on the same network as other services and need other means of delivering events, such as net/TLS sockets
+*   You want to use wildcards `*` when subscribing to events
 
 ## Instantiating and API
 
@@ -32,11 +33,11 @@ $ npm install lime
 var Lime = require('lime');
 
 // instantiate using default options
-var dispatcher = new Lime();
+var dispatcher = new Lime;
 
 // instantiate using custom options
 var dispatcher = new Lime({
-    delimeter : '|',
+    delimeter : '~',
     redisHost : '10.0.0.29'
 });
 ```
@@ -45,17 +46,68 @@ var dispatcher = new Lime({
 
 Possible options for Lime are:
 
-*   `delimeter` &mdash; sting "glue" used to concatenate parts of events
+*   `delimeter` &mdash; sting "glue" used to concatenate parts of events by emitters and by subscribers
+*   `keyBase` &mdash; base of the key for Redis; room name will be added to this string
+*   `defaultRoom` &mdash; default room name to be used if room name was not used in `join()` method
+*   `redisHost`  &mdash; host of Redis server
+*   `redisPort`  &mdash; port of Redis server
+*   `redisOpts`  &mdash; options for Node.js Redis client
 
-### join()
+### join(room)
+
+Adds dispatcher to a room. Examples:
+
+```javascript
+disp.join('company.12345'); // will join room "company.12345"
+disp.join(); // will join default room
+```
+
+This method is chainable.
 
 ### leave()
 
+Removes dispatcher from a room. Examples:
+
+```javascript
+disp.leave('company.234'); // will leave room and will unsubscribe from corresponding Redis channel
+disp.leave(); // will leave all rooms
+```
+
+This method is chainable.
+
 ### emit()
+
+Emits event to joined rooms. Examples:
+
+```javascript
+disp.emit('hello-world', { foo: 'bar' }); // emits event "hello-world"
+disp.emit('galaxy.123', 'hello-world', { foo: 'bar' }); // emits event "galaxy.123::hello-world" depending on delimeter
+```
+
+This method is chainable.
 
 ### on()
 
+Adds listener for an event. Examples:
+
+```javascript
+disp.on('hello-world', function() { ... }); // will be triggered by event "hello-world"
+disp.on('company.*', function() { ... }); // will be triggered by events "company.1234", "company.Foo" etc.
+disp.on('hello-world', 'galaxy.*', function() { ... }); // will be triggered by events "galaxy.123::hello-world" or "hello-world::galaxy.Milky Way", and so on
+disp.on('*', function() { ... }); // will be triggered by all events
+```
+
+Callbacks will be executed with different arguments depending on their expected arguments:
+
+*   If callback function expects 0 arguments, it will be executed without any;
+*   If callback expects 1 argument, it will be executed with event payload only;
+*   If callback expects 2 arguments, it will be executed with event name and event payload.
+
+This method is chainable.
+
 ### off()
+
+This method is chainable.
 
 ### quit()
 
