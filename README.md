@@ -35,7 +35,7 @@ var Lime = require('lime');
 // instantiate using default options
 var dispatcher = new Lime;
 
-// instantiate using custom options
+// instantiate using some custom options
 var dispatcher = new Lime({
     delimeter : '~',
     redisHost : '10.0.0.29'
