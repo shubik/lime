@@ -9,6 +9,12 @@ sub.on('foo', function(data) {
     //sub.leave().quit();
 });
 
+sub.on('o', function(data) {
+    console.log('sub event o:', data);
+    //sub.leave().quit();
+});
+
+
 sub.on('*', function(data) {
     console.log('sub wildcard event *', data);
     //sub.leave().quit();

@@ -97,6 +97,12 @@ disp.on('hello-world', 'galaxy.*', cbFunc); // will be triggered by events "gala
 disp.on('*', cbFunc); // will be triggered by all events
 ```
 
+#### Matching
+
+Matching events name is done with regex without indicating beginning and end of input, therefore... (to do)
+
+#### Callbacks
+
 Callbacks will be executed with different arguments depending on their expected arguments:
 
 *   If callback expects 0 arguments, it will be executed without any;
