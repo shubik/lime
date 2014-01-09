@@ -133,7 +133,7 @@ disp.on('foo', function(evt, data) { ... }); // will be executed with event name
 
 This method is chainable.
 
-### off()
+### off(*event)
 
 Removes listeners for provided event. Examples:
 
