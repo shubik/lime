@@ -31,10 +31,33 @@ sub.on('company.*', 'device.*', function(data) {
 });
 
 
+sub.on('age:36', function(data) {
+    console.log('age:36 without boundary', data);
+});
+
+sub.on('age:36', { boundary: true }, function(data) {
+    console.log('age:36 with boundary', data);
+});
+
+sub.on('age:*', { boundary: true }, function(data) {
+    console.log('age:* with boundary', data);
+});
+
+sub.on('name:alex', 'age:*', { boundary: true }, function(data) {
+    console.log('name:alex::age:* with boundary', data);
+});
+
+sub.on('name:alex::age:36', { boundary: true }, function(data) {
+    console.log('name:alex::age:36 with boundary', data);
+});
+
+
 // Emit
 
 pub.join('test').emit('foo', 'bar');
-pub.join('test').emit('company.123', 'user.3456', { payload: 123 });
+pub.emit('company.123', 'user.3456', { payload: 123 });
+pub.emit('name:alex::age:36', 1);
+pub.emit('name:alex', 'age:36', 2);
 
 //pub.leave('test').leave().quit();
 //sub.leave().quit();

@@ -64,7 +64,7 @@ disp.join(); // will join default room
 
 This method is chainable.
 
-### leave()
+### leave(*room)
 
 Removes dispatcher from a room. Examples:
 
@@ -75,7 +75,7 @@ disp.leave(); // will leave all rooms
 
 This method is chainable.
 
-### emit()
+### emit(*event, payload)
 
 Emits event to joined rooms. Examples:
 
@@ -86,20 +86,34 @@ disp.emit('galaxy.123', 'hello-world', { foo: 'bar' }); // emits event "galaxy.1
 
 This method is chainable.
 
-### on()
+### on(*event, [options], callback)
 
 Adds listener for an event. Examples:
 
 ```javascript
-disp.on('hello-world', cbFunc); // will be triggered by event "hello-world"
-disp.on('company.*', cbFunc); // will be triggered by events "company.1234", "company.Foo" etc.
-disp.on('hello-world', 'galaxy.*', cbFunc); // will be triggered by events "galaxy.123::hello-world" or "hello-world::galaxy.Milky Way", and so on
-disp.on('*', cbFunc); // will be triggered by all events
+disp.on('hello-world', cb); // will be triggered by event "hello-world"
+disp.on('company.*', cb); // will be triggered by events "company.1234", "company.Foo" etc.
+disp.on('hello-world', 'galaxy.*', cb); // will be triggered by events "galaxy.123::hello-world" or "hello-world::galaxy.Milky Way", and so on
+disp.on('*', cb); // will be triggered by all events
 ```
 
-#### Matching
+#### Options
 
-Matching events name is done with regex without indicating beginning and end of input, therefore... (to do)
+*   `boundary` (boolean, defaults to `FALSE`) &mdash; if set to `true`, than beginning and end of input markers will be used, and entire string will need to match;
+*   `replace` (boolean, defaults to `FALSE`) &mdash; if set to `true`, than all queued callbacks will be replaced with the current one.
+
+For example:
+
+```javascript
+disp.on('age:36', cb); // will execute
+disp.on('name:alex::age:*', { boundary: true }, cb); // will execute
+disp.on('name:alex', 'age:36', { boundary: true }, cb); // will execute
+
+disp.on('age:36', { boundary: true }, cb); // will not match
+disp.on('name:*', { boundary: true }, cb); // will not match
+
+disp.emit('name:alex::age:36', 'Just say Yes');
+```
 
 #### Callbacks
 
