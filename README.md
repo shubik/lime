@@ -181,4 +181,6 @@ var Lime = require('lime'),
 
 ## Changelog
 
-### v.0.1.0
+### v.0.1.1 &mdash; Added options to `.on()` method
+
+### v.0.1.0 &mdash; Initial library
